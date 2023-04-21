@@ -1,26 +1,12 @@
 <script setup>
-import { ref,onMounted,getCurrentInstance } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+const count = ref(0)
 const router = useRouter()
-const { proxy } = getCurrentInstance()
 const goHome = () => {
 	router.push('/welcome')
 }
-onMounted(() => {
- 
-  proxy.$request({
-    method:'get',
-    url:'/login',
-    data:{
-      name:'jack'
-    }
-  }).then((result) => {
-    console.log(result);
-  }).catch((err) => {
-    
-  });
 
-})
 
 </script>
 
