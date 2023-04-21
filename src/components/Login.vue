@@ -8,6 +8,8 @@ const goHome = () => {
 }
 onMounted(() => {
  
+
+  
   proxy.$request({
     method:'get',
     url:'/login',
