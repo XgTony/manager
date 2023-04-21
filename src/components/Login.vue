@@ -21,6 +21,7 @@ onMounted(() => {
   }).catch((err) => {
 
   });
+})
 </script>
 
 <template>
