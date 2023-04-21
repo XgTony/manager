@@ -7,14 +7,14 @@ import 'element-plus/dist/index.css'
 import router from './router'
 import axios from 'axios'
 import config from './config'
+
 // 获取环境变量
 // 环境变量通常可以从 process.env 获得, 注意 Vite 默认是不加载 .env 文件的
-const env = import.meta.env
+// const env = import.meta.env
+import request from './utils/request'
 const app = createApp(App)
-
 app.use(router)
 app.use(ElementPlus)
-console.log(config);
-axios.get(config.mockApi+'/login').then(res => console.log(res))
-
+// 全局挂载$request
+app.config.globalProperties.$request = request
 app.mount('#app')
