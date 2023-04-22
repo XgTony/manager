@@ -1,6 +1,10 @@
 /* 
 *    环境配置封装
 */
+
+// 获取环境变量
+// 环境变量通常可以从 process.env 获得, 注意 Vite 默认是不加载 .env 文件的
+// const env = import.meta.env
 // 环境变量
 const env = import.meta.env.MODE || 'production'
 const EnvConfig = {
@@ -9,11 +13,11 @@ const EnvConfig = {
         mockApi: 'https://www.fastmock.site/mock/ed148014aae7cfb08161c366561fada6/api'
     },
     test: {
-        baseApi: '//test.baidu.com/api',
+        baseApi: '/',
         mockApi: 'https://www.fastmock.site/mock/ed148014aae7cfb08161c366561fada6/api'
     },
-    prod: {
-        baseApi: '//baidu.com/api',
+    production: {
+        baseApi: '/',
         mockApi: 'https://www.fastmock.site/mock/ed148014aae7cfb08161c366561fada6/api'
     }
 }
