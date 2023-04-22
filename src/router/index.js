@@ -4,12 +4,13 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HelloWorld from './../components/HelloWorld.vue'
 import Welcome from './../components/Welcome.vue'
 import Login from './../components/Login.vue'
+import Home from './../components/Home.vue'
 
 const routes = [
     {
         name: 'home',
         path: '/',
-        component: HelloWorld,
+        component: Home,
         redirect: '/welcome',
         meta:{
             title: '首页'
