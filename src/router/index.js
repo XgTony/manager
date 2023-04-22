@@ -1,18 +1,12 @@
 // createRouter 创建路由
 // createWebHashHistory 哈希路由
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import HelloWorld from './../components/HelloWorld.vue'
+import Welcome from './../components/Welcome.vue'
+import Login from './../components/Login.vue'
 import Home from './../components/Home.vue'
 
 const routes = [
-    {
-        name:'login',
-        path:'/login',
-        meta:{
-            title:'登录'
-        },
-        component: () => import('@/views/Login.vue')
-    },
     {
         name: 'home',
         path: '/',
@@ -25,14 +19,21 @@ const routes = [
             {
                 name: 'welcome',
                 path: '/welcome',
-                component: () => import('@/views/Welcome.vue'),
+                component: Welcome,
                 meta:{
                     title: '欢迎页'
                 },
             },
-            
+            {
+                name: 'login',
+                path: '/login',
+                component: Login,
+                meta:{
+                    title: '登录'
+                },
+            },
         ]
-    },
+    }
 ]
 
 
