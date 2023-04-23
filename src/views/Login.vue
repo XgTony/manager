@@ -33,13 +33,13 @@ onMounted(() => {
 
 })
 const login = () => {
-	console.log(user)
+	// console.log(user)
 	// 表单是否全部填写，valid=true,全部填写
 	userForm.value.validate((valid) => {
 		if(valid){
 			proxy.$api.login(user).then(res => {
-				console.log(res);
-				console.log(store);
+				// console.log(res);
+				// console.log(store);
 				store.commit('saveUserInfo',res)
 				router.push('/welcome')
 

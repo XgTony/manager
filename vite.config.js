@@ -10,7 +10,9 @@ export default defineConfig({
     port:8080,
     // 代理
     proxy: {
-      
+      '/api':{
+        target:'http://localhost:3000'
+      }
     }
   },
   plugins: [vue()],
