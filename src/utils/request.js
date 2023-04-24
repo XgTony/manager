@@ -6,6 +6,7 @@ import axios from "axios";
 import config from "../config";
 import { ElMessage } from 'element-plus'
 import router from "../router";
+import storage from '@/utils/storage'
 const TOKEN_INVALID = 'token认证失败，请重新登录'
 const NETWORK_ERROR = '网络请求异常，请稍后重试'
 // 创建axios实例对象，添加全局配置
@@ -19,7 +20,8 @@ const service = axios.create({
 service.interceptors.request.use((req) => {
     // TO-DO
     const headers = req.headers
-    if (!headers.Authorization) headers.Authorization = 'Bear Jack'
+    const {token} = storage.getItem('userInfo')
+    if (!headers.Authorization) headers.Authorization = 'Bear '+ token
     return req
 })
 
