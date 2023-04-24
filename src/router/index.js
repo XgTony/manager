@@ -30,6 +30,24 @@ const routes = [
                     title: '欢迎页'
                 },
             },
+            {
+                name: 'user',
+                path: 'user',
+                component: () => import('@/views/Welcome.vue'),
+                meta:{
+                    title: '用户'
+                },
+                children: [
+                    {
+                        name: 'info',
+                        path: 'info',
+                        component: () => import('@/views/Welcome.vue'),
+                        meta:{
+                            title: '信息统计'
+                        },
+                    },
+                ]
+            },
             
         ]
     },

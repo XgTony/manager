@@ -4,7 +4,7 @@
 import storage from '../utils/storage'
 export default {
     saveUserInfo(state,userInfo){
-        console.log(userInfo);
+        // console.log(userInfo);
         state.userInfo = userInfo
         storage.setItem('userInfo',userInfo)
     }

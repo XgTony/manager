@@ -1,10 +1,19 @@
 <script setup>
-import { ref, reactive, getCurrentInstance } from 'vue'
+import { ref, reactive, getCurrentInstance, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import treeMenu from '@/components/TreeMenu.vue'
+import BreadCrumb from '@/components/BreadCrumb.vue';
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-const isCollapse = ref(false)
-const userInfo = reactive({ userName: 'jack', userEmail: 'jack@gmail.com' })
+let isCollapse = ref(false)
+let noticeCount = ref(0)
+const userMenu = reactive([])
+const userInfo = reactive(proxy.$store.state.userInfo)
+onMounted(() => {
+	getNoticeCount()
+	getMenuList()
+})
+
 const handleLogout = (key) => {
 	if (key === 'email') return
 	if (key === 'logout') {
@@ -15,6 +24,26 @@ const handleLogout = (key) => {
 		router.push('/login')
 	}
 }
+const getNoticeCount = async () => {
+	try {
+		let count = await proxy.$api.noticeCount()
+		noticeCount.value = count
+	} catch (error) {
+		console.error(error)
+	}
+}
+const getMenuList = async () => {
+	try {
+		let list = await proxy.$api.getMenuList()
+		console.log(list)
+		list.forEach((element) => {
+			userMenu.push(element)
+		})
+	} catch (error) {
+		console.error(error)
+	}
+}
+
 const toggle = () => {
 	isCollapse.value = !isCollapse.value
 }
@@ -32,30 +61,15 @@ const toggle = () => {
 			<!-- @open="handleOpen" -->
 			<!-- @close="handleClose" -->
 			<el-menu
-				default-active="2"
+                default-active="/system/menu"
 				class="nav-menu"
 				router
 				background-color="#001529"
 				text-color="#FFF"
 				:collapse="isCollapse"
 			>
-				<el-sub-menu index="1">
-					<template #title>
-						<el-icon><location /></el-icon>
-						<span>系统管理</span>
-					</template>
-					<el-menu-item index="1-1">用户管理</el-menu-item>
-					<el-menu-item index="1-2">菜单管理</el-menu-item>
-				</el-sub-menu>
-				<el-sub-menu index="2">
-					<template #title>
-						<el-icon><icon-menu /></el-icon>
-						<span>审批管理</span>
-					</template>
-					<el-menu-item index="2-1">休假申请</el-menu-item>
-					<el-menu-item index="2-2">待我审批</el-menu-item>
-				</el-sub-menu>
-			</el-menu>
+                <treeMenu :userMenu="userMenu"></treeMenu>
+            </el-menu>
 		</div>
 
 		<div :class="['content-right', isCollapse ? 'fold' : 'unflod']">
@@ -64,10 +78,16 @@ const toggle = () => {
 					<el-icon class="menu-flod" @click="toggle"
 						><Fold
 					/></el-icon>
-					<div class="bread">面包屑</div>
+					<div class="bread">
+                        <BreadCrumb></BreadCrumb>
+                    </div>
 				</div>
 				<div class="user-info">
-					<el-badge :is-dot="true" class="notice" type="danger">
+					<el-badge
+						:is-dot="Boolean(noticeCount)"
+						class="notice"
+						type="danger"
+					>
 						<el-icon><BellFilled /></el-icon>
 					</el-badge>
 					<el-dropdown @command="handleLogout">
@@ -93,6 +113,7 @@ const toggle = () => {
 				</div>
 			</div>
 			<div class="wrapper">
+				<!-- Welcome.vue的出口 -->
 				<div class="main-page"><router-view></router-view></div>
 			</div>
 		</div>
@@ -110,8 +131,8 @@ const toggle = () => {
 		background-color: #001529;
 		color: #fff;
 		overflow-y: auto;
-        overflow-x: hidden;
-		transition: width 0.8s;
+		overflow-x: hidden;
+		transition: width 0.5s;
 		&.fold {
 			width: 64px;
 		}
@@ -138,7 +159,7 @@ const toggle = () => {
 
 	.content-right {
 		margin-left: 200px;
-        transition: width 0.8s;
+		transition: width 0.5s;
 		&.fold {
 			margin-left: 64px;
 		}
