@@ -35,7 +35,7 @@ const getNoticeCount = async () => {
 const getMenuList = async () => {
 	try {
 		let list = await proxy.$api.getMenuList()
-		console.log(list)
+		// console.log(list)
 		list.forEach((element) => {
 			userMenu.push(element)
 		})
@@ -114,7 +114,8 @@ const toggle = () => {
 			</div>
 			<div class="wrapper">
 				<!-- Welcome.vue的出口 -->
-				<div class="main-page"><router-view></router-view></div>
+				<!-- <div class="main-page"></div> -->
+				<router-view></router-view>
 			</div>
 		</div>
 	</div>

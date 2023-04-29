@@ -52,8 +52,8 @@ function request(options) {
         options.params = options.data
     }
     if(typeof options.mock !== 'undefined'){
-        console.log(options.mock);
-        console.log(  'config.mock'+config.mock);
+        // console.log(options.mock);
+        // console.log(  'config.mock'+config.mock);
         config.mock = options.mock
     }
     if(config.env === 'production'){
