@@ -33,20 +33,10 @@ const routes = [
             {
                 name: 'user',
                 path: 'user',
-                component: () => import('@/views/Welcome.vue'),
+                component: () => import('@/views/User.vue'),
                 meta:{
-                    title: '用户'
+                    title: '用户管理'
                 },
-                children: [
-                    {
-                        name: 'info',
-                        path: 'info',
-                        component: () => import('@/views/Welcome.vue'),
-                        meta:{
-                            title: '信息统计'
-                        },
-                    },
-                ]
             },
             
         ]
