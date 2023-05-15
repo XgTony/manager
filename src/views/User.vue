@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, onMounted, getCurrentInstance } from 'vue'
+import { reactive, ref, onMounted, getCurrentInstance, withCtx } from 'vue'
 import {} from 'vue-router'
 const form = ref(null)
 const { proxy } = getCurrentInstance()
@@ -8,11 +8,37 @@ const user = reactive({
 	userName: '',
 	state: 1,
 })
+// 新增弹框显示控制
+const showModal = ref(false)
+// 新增用户form对象
+const userForm = reactive({
+	
+})
 const tableData = reactive([])
 const pager = reactive({
 	pageNum: 1,
 	pageSize: 10,
 })
+// 选中用户列表的对象
+const checkedUserIds = ref([])
+// 定义表单校验规则
+const rules = reactive({
+	userName: [
+		{
+			required:true,
+			message:'请输入用户名称',
+			trigger:'blur'
+		},
+	],
+	userEmail: [
+		{
+			required:true,
+			message:'请输入用户邮箱',
+			trigger:'blur'
+		},
+	]
+})
+// 表格格式
 const columns = reactive([
 	{
 		label: '用户ID',
@@ -29,10 +55,23 @@ const columns = reactive([
 	{
 		label: '用户角色',
 		prop: 'role',
+		formatter(row, column, value) {
+			return {
+				0: '管理员',
+				1: '普通用户',
+			}[value]
+		},
 	},
 	{
 		label: '用户状态',
 		prop: 'state',
+		formatter(row, column, value) {
+			return {
+				1: '在职',
+				2: '离职',
+				3: '试用期',
+			}[value]
+		},
 	},
 	{
 		label: '注册时间',
@@ -46,6 +85,7 @@ const columns = reactive([
 onMounted(() => {
 	getTableData()
 })
+// 获取列表
 const getTableData = async () => {
 	let params = { ...user, ...pager }
 	try {
@@ -68,9 +108,43 @@ const handleReset = () => {
 }
 // 改变分页器页数触发事件
 const handleCurrentChange = (val) => {
-	console.log(val);
+	// console.log(val);
 	pager.pageNum = val
-	console.log(pager);
+	// console.log(pager);
+}
+// 单个删除
+const handleDelete = async (row) => {
+	await proxy.$api.deleteUser({ userIds: [row.userId] })
+	proxy.$message.success('删除成功')
+	getTableData()
+}
+// 批量删除
+const handlePatchDel = async () => {
+	if (checkedUserIds.value.length === 0) {
+		proxy.$message.error('请选择要删除的用户')
+		return
+	}
+	// console.log(checkedUserIds.value);
+	let res = await proxy.$api.deleteUser({ userIds: checkedUserIds.value })
+	if (res.nModified > 0) {
+		proxy.$message.success('删除成功')
+		getTableData()
+	} else {
+		proxy.$message.error('删除失败')
+	}
+}
+// 表格多选事件
+const handleSelectionChange = (list) => {
+	// console.log(list instanceof Array);
+	let arr = []
+	list.map((item) => {
+		arr.push(item.userId)
+	})
+	checkedUserIds.value = arr
+}
+// 新增弹出框显示
+const handleCreate = () => {
+	showModal.value = true
 }
 </script>
 
@@ -108,22 +182,34 @@ const handleCurrentChange = (val) => {
 		</div>
 		<div class="base-table">
 			<div class="action">
-				<el-button type="primary">新增</el-button>
-				<el-button type="danger">批量删除</el-button>
+				<el-button type="primary" @click="handleCreate">新增</el-button>
+				<el-button type="danger" @click="handlePatchDel()"
+					>批量删除</el-button
+				>
 			</div>
 
-			<el-table :data="tableData" style="width: 100%">
+			<el-table
+				:data="tableData"
+				style="width: 100%"
+				@selection-change="handleSelectionChange"
+			>
 				<el-table-column type="selection" width="50" />
 				<el-table-column
 					v-for="item in columns"
 					:key="item.prop"
 					:prop="item.prop"
 					:label="item.label"
+					:formatter="item.formatter"
 				></el-table-column>
 				<el-table-column label="操作" width="150">
 					<template #default="scope">
 						<el-button size="small" type="primary">编辑</el-button>
-						<el-button type="danger" size="small">删除</el-button>
+						<el-button
+							type="danger"
+							size="small"
+							@click="handleDelete(scope.row)"
+							>删除</el-button
+						>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -135,6 +221,64 @@ const handleCurrentChange = (val) => {
 				@current-change="handleCurrentChange"
 			/>
 		</div>
+		<!-- 用户新增弹出框 -->
+		<el-dialog v-model="showModal" title="用户新增">
+			<el-form :model="userForm" label-width="100px" :rules="rules">
+				<el-form-item label="用户名" prop="userName">
+					<el-input
+						v-model="userForm.userName"
+						placeholder="请输入用户名称"
+					></el-input>
+				</el-form-item>
+				<el-form-item label="邮箱" prop="userEmail">
+					<el-input
+						v-model="userForm.userEmail"
+						placeholder="请输入用户邮箱"
+					></el-input>
+				</el-form-item>
+				<el-form-item label="手机号" prop="mobile">
+					<el-input
+						v-model="userForm.mobile"
+						placeholder="请输入用户电话"
+					></el-input>
+				</el-form-item>
+				<el-form-item label="岗位" prop="job">
+					<el-input
+						v-model="userForm.job"
+						placeholder="请输入用户岗位"
+					></el-input>
+				</el-form-item>
+				<el-form-item label="状态" prop="state">
+					<el-select v-model="userForm.state">
+						<el-option value="1" label="在职"></el-option>
+						<el-option value="2" label="离职"></el-option>
+						<el-option value="3" label="试用期"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="系统角色" prop="roleList">
+					<el-select v-model="userForm.roleList" placeholder="请选择用户角色">
+						<el-option value="1" label="在职"></el-option>
+					</el-select>
+				</el-form-item>
+				<el-form-item label="部门" prop="deptId">
+					 <el-cascader
+						v-model="userForm.deptId"
+						placeholder="请选择所在部门"
+						:options="[]"
+						:props="{ checkStrictly:true }"
+						@change="handleChange"
+					/> 
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="showModal = false">取消</el-button>
+					<el-button type="primary" @click="showModal = false">
+						确认
+					</el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
