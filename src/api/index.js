@@ -45,4 +45,20 @@ export default {
             mock:true
         })
     },
+    getRoleList(params){
+        return request({
+            method:'get',
+            url: '/roles/allList',
+            data: params,
+            mock:true
+        })
+    },
+    getDeptList(params){
+        return request({
+            method:'get',
+            url: '/dept/list',
+            data: params,
+            mock:true
+        })
+    },
 }

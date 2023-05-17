@@ -3,17 +3,21 @@ import { reactive, ref, onMounted, getCurrentInstance, withCtx } from 'vue'
 import {} from 'vue-router'
 const form = ref(null)
 const { proxy } = getCurrentInstance()
+onMounted(() => {
+	getTableData()
+	getDeptList()
+	getRoleList()
+})
 const user = reactive({
 	userId: '',
 	userName: '',
 	state: 1,
 })
+
 // 新增弹框显示控制
 const showModal = ref(false)
 // 新增用户form对象
-const userForm = reactive({
-	
-})
+const userForm = reactive({})
 const tableData = reactive([])
 const pager = reactive({
 	pageNum: 1,
@@ -25,18 +29,18 @@ const checkedUserIds = ref([])
 const rules = reactive({
 	userName: [
 		{
-			required:true,
-			message:'请输入用户名称',
-			trigger:'blur'
+			required: true,
+			message: '请输入用户名称',
+			trigger: 'blur',
 		},
 	],
 	userEmail: [
 		{
-			required:true,
-			message:'请输入用户邮箱',
-			trigger:'blur'
+			required: true,
+			message: '请输入用户邮箱',
+			trigger: 'blur',
 		},
-	]
+	],
 })
 // 表格格式
 const columns = reactive([
@@ -82,9 +86,10 @@ const columns = reactive([
 		prop: 'lastLoginTime',
 	},
 ])
-onMounted(() => {
-	getTableData()
-})
+// 所有角色列表
+const roleList = ref([])
+// 所有部门列表
+const deptList = ref([])
 // 获取列表
 const getTableData = async () => {
 	let params = { ...user, ...pager }
@@ -145,6 +150,16 @@ const handleSelectionChange = (list) => {
 // 新增弹出框显示
 const handleCreate = () => {
 	showModal.value = true
+}
+// 获取部门列表
+const getDeptList = async () => {
+	let res = await proxy.$api.getDeptList()
+	deptList.value = res
+}
+// 获取角色列表
+const getRoleList = async () => {
+	let res = await proxy.$api.getRoleList()
+	roleList.value = res
 }
 </script>
 
@@ -256,18 +271,21 @@ const handleCreate = () => {
 					</el-select>
 				</el-form-item>
 				<el-form-item label="系统角色" prop="roleList">
-					<el-select v-model="userForm.roleList" placeholder="请选择用户角色">
+					<el-select
+						v-model="userForm.roleList"
+						placeholder="请选择用户角色"
+					>
 						<el-option value="1" label="在职"></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="部门" prop="deptId">
-					 <el-cascader
+					<el-cascader
 						v-model="userForm.deptId"
 						placeholder="请选择所在部门"
 						:options="[]"
-						:props="{ checkStrictly:true }"
+						:props="{ checkStrictly: true }"
 						@change="handleChange"
-					/> 
+					/>
 				</el-form-item>
 			</el-form>
 			<template #footer>
