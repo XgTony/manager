@@ -61,4 +61,12 @@ export default {
             mock:true
         })
     },
+    userSubmit(params){
+        return request({
+            method:'post',
+            url:'/users/operate',
+            data: params,
+            mock:true
+        })
+    }
 }

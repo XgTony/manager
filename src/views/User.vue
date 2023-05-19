@@ -1,13 +1,15 @@
 <script setup>
 import { reactive, ref, onMounted, getCurrentInstance, withCtx } from 'vue'
 import {} from 'vue-router'
-const form = ref(null)
-const { proxy } = getCurrentInstance()
 onMounted(() => {
 	getTableData()
 	getDeptList()
 	getRoleList()
 })
+const form = ref(null)
+const dialogForm = ref(null)
+const { proxy } = getCurrentInstance()
+let action = ref('add')
 const user = reactive({
 	userId: '',
 	userName: '',
@@ -108,8 +110,10 @@ const handleQuery = () => {
 	getTableData()
 }
 // 重置表单
-const handleReset = () => {
-	form.value.resetFields()
+const handleReset = (form) => {
+	form.resetFields()
+	// form.value.resetFields()
+	
 }
 // 改变分页器页数触发事件
 const handleCurrentChange = (val) => {
@@ -161,6 +165,27 @@ const getRoleList = async () => {
 	let res = await proxy.$api.getRoleList()
 	roleList.value = res
 }
+// 用户取消
+const handleClose = () => {
+	showModal.value = false
+	handleReset(dialogForm.value)
+}
+// 用户提交
+const handleSubmit = () => {
+	dialogForm.value.validate(async (valid) => {
+		if(valid){
+			console.log({...userForm,action});
+			let res = await proxy.$api.userSubmit({...userForm,action:action.value})
+			console.log(res);
+			showModal.value = false
+			proxy.$message.success('用户创建成功')
+			handleReset(dialogForm.value)
+			getTableData()
+
+		}
+	})
+	
+}
 </script>
 
 <template>
@@ -191,7 +216,7 @@ const getRoleList = async () => {
 					<el-button type="primary" @click="handleQuery"
 						>查询</el-button
 					>
-					<el-button @click="handleReset">重置</el-button>
+					<el-button @click="handleReset(form)">重置</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -238,7 +263,7 @@ const getRoleList = async () => {
 		</div>
 		<!-- 用户新增弹出框 -->
 		<el-dialog v-model="showModal" title="用户新增">
-			<el-form :model="userForm" label-width="100px" :rules="rules">
+			<el-form ref="dialogForm" :model="userForm" label-width="100px" :rules="rules">
 				<el-form-item label="用户名" prop="userName">
 					<el-input
 						v-model="userForm.userName"
@@ -274,24 +299,32 @@ const getRoleList = async () => {
 					<el-select
 						v-model="userForm.roleList"
 						placeholder="请选择用户角色"
+						multiple
+						style="width: 100%;"
 					>
-						<el-option value="1" label="在职"></el-option>
+						<el-option
+							v-for="role in roleList"
+							:key="role._id"
+							:label="role.roleName"
+							:value="role.roleName"
+						></el-option>
 					</el-select>
 				</el-form-item>
 				<el-form-item label="部门" prop="deptId">
 					<el-cascader
 						v-model="userForm.deptId"
 						placeholder="请选择所在部门"
-						:options="[]"
-						:props="{ checkStrictly: true }"
+						:options="[...deptList]"
+						:props="{ checkStrictly: true,value:'_id',label:'deptName' }"
 						@change="handleChange"
+						clearable
 					/>
 				</el-form-item>
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="showModal = false">取消</el-button>
-					<el-button type="primary" @click="showModal = false">
+					<el-button @click="handleClose">取消</el-button>
+					<el-button type="primary" @click="handleSubmit">
 						确认
 					</el-button>
 				</span>
