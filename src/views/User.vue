@@ -18,7 +18,7 @@ const user = reactive({
 
 // 新增弹框显示控制
 const showModal = ref(false)
-// 新增用户form对象
+// 新增用户 form对象
 const userForm = reactive({})
 const tableData = reactive([])
 const pager = reactive({
@@ -113,7 +113,6 @@ const handleQuery = () => {
 const handleReset = (form) => {
 	form.resetFields()
 	// form.value.resetFields()
-	
 }
 // 改变分页器页数触发事件
 const handleCurrentChange = (val) => {
@@ -153,6 +152,7 @@ const handleSelectionChange = (list) => {
 }
 // 新增弹出框显示
 const handleCreate = () => {
+	action.value = 'add'
 	showModal.value = true
 }
 // 获取部门列表
@@ -173,18 +173,29 @@ const handleClose = () => {
 // 用户提交
 const handleSubmit = () => {
 	dialogForm.value.validate(async (valid) => {
-		if(valid){
-			console.log({...userForm,action});
-			let res = await proxy.$api.userSubmit({...userForm,action:action.value})
-			console.log(res);
+		if (valid) {
+			console.log({ ...userForm, action })
+			let res = await proxy.$api.userSubmit({
+				...userForm,
+				action: action.value,
+			})
+			console.log(res)
 			showModal.value = false
 			proxy.$message.success('用户创建成功')
 			handleReset(dialogForm.value)
 			getTableData()
-
 		}
 	})
-	
+}
+// 用户编辑
+const handleEdit = (row) => {
+	action.value = 'edit'
+	console.log(row)
+	showModal.value = true
+	// DOM渲染完后，在填写内容
+	proxy.$nextTick(() => {
+		Object.assign(userForm, row)
+	})
 }
 </script>
 
@@ -243,7 +254,12 @@ const handleSubmit = () => {
 				></el-table-column>
 				<el-table-column label="操作" width="150">
 					<template #default="scope">
-						<el-button size="small" type="primary">编辑</el-button>
+						<el-button
+							size="small"
+							type="primary"
+							@click="handleEdit(scope.row)"
+							>编辑</el-button
+						>
 						<el-button
 							type="danger"
 							size="small"
@@ -263,11 +279,17 @@ const handleSubmit = () => {
 		</div>
 		<!-- 用户新增弹出框 -->
 		<el-dialog v-model="showModal" title="用户新增">
-			<el-form ref="dialogForm" :model="userForm" label-width="100px" :rules="rules">
+			<el-form
+				ref="dialogForm"
+				:model="userForm"
+				label-width="100px"
+				:rules="rules"
+			>
 				<el-form-item label="用户名" prop="userName">
 					<el-input
 						v-model="userForm.userName"
 						placeholder="请输入用户名称"
+						:disabled="action === 'edit'"
 					></el-input>
 				</el-form-item>
 				<el-form-item label="邮箱" prop="userEmail">
@@ -300,7 +322,7 @@ const handleSubmit = () => {
 						v-model="userForm.roleList"
 						placeholder="请选择用户角色"
 						multiple
-						style="width: 100%;"
+						style="width: 100%"
 					>
 						<el-option
 							v-for="role in roleList"
@@ -315,7 +337,11 @@ const handleSubmit = () => {
 						v-model="userForm.deptId"
 						placeholder="请选择所在部门"
 						:options="[...deptList]"
-						:props="{ checkStrictly: true,value:'_id',label:'deptName' }"
+						:props="{
+							checkStrictly: true,
+							value: '_id',
+							label: 'deptName',
+						}"
 						@change="handleChange"
 						clearable
 					/>
