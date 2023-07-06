@@ -15,7 +15,9 @@
     "path": "^0.12.7",
     "sass": "^1.62.0",
     "vue": "^3.2.47",
+    "vue-json-excel": "^0.3.0",
     "vue-router": "^4.1.6",
+    "vue3-json-excel": "^1.0.10-alpha",
     "vuex": "^4.1.0"
   },
   "devDependencies": {

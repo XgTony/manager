@@ -11,10 +11,12 @@ import api from '@/api/index.js'
 
 import request from './utils/request'
 import storage from './utils/storage'
+import vue3JsonExcel from 'vue3-json-excel'
 const app = createApp(App)
 app.use(router)
 app.use(ElementPlus)
 app.use(store)
+app.use(vue3JsonExcel)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }

@@ -359,6 +359,11 @@ delayed-stream@~1.0.0:
   resolved "https://registry.npmmirror.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==
 
+downloadjs@^1.4.7:
+  version "1.4.7"
+  resolved "https://registry.npmmirror.com/downloadjs/-/downloadjs-1.4.7.tgz#f69f96f940e0d0553dac291139865a3cd0101e3c"
+  integrity sha512-LN1gO7+u9xjU5oEScGFKvXhYf7Y/empUIIEAGBs1LzUq/rg5duiDrkuH5A2lQGd5jfMOb9X9usDa2oVXwJ0U/Q==
+
 element-plus@^2.3.3:
   version "2.3.3"
   resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.3.3.tgz#33173bbbe84ada40f4d796fe5043c44781198ea4"
@@ -644,12 +649,26 @@ vue-demi@*:
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.14.0.tgz#dcfd9a9cf9bb62ada1582ec9042372cf67ca6190"
   integrity sha512-gt58r2ogsNQeVoQ3EhoUAvUsH9xviydl0dWJj7dabBC/2L4uBId7ujtCwDRD0JhkGsV1i0CtfLAeyYKBht9oWg==
 
+vue-json-excel@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.npmmirror.com/vue-json-excel/-/vue-json-excel-0.3.0.tgz#72cbe4a004720259edc65555a3f072198cf79146"
+  integrity sha512-FrSh0tVUpw4K+ilLO8g0Qp52eFJw/hkk3rZPTEKo9qVkJgVfQtZwzj3UWc5ACYxA3jLk9HtjK+f9xKHCN4Kgag==
+  dependencies:
+    downloadjs "^1.4.7"
+
 vue-router@^4.1.6:
   version "4.1.6"
   resolved "https://registry.npmmirror.com/vue-router/-/vue-router-4.1.6.tgz#b70303737e12b4814578d21d68d21618469375a1"
   integrity sha512-DYWYwsG6xNPmLq/FmZn8Ip+qrhFEzA14EI12MsMgVxvHFDYvlr4NXpVF5hrRH1wVcDP8fGi5F4rxuJSl8/r+EQ==
   dependencies:
     "@vue/devtools-api" "^6.4.5"
+
+vue3-json-excel@^1.0.10-alpha:
+  version "1.0.10-alpha"
+  resolved "https://registry.npmmirror.com/vue3-json-excel/-/vue3-json-excel-1.0.10-alpha.tgz#1e0c58457ee5c860a8901c6b8dd594a3386d2b42"
+  integrity sha512-wTcHSWdGQ5hFjpYbw2KOoLNQKVMFqDPfMPKuRpisxAACMk/E483/RLP3GT6HGMxocSO61wGKrAzYymYhKjo1Ew==
+  dependencies:
+    downloadjs "^1.4.7"
 
 vue@^3.2.47:
   version "3.2.47"
