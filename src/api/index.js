@@ -5,68 +5,76 @@
  */
 import request from "../utils/request"
 export default {
-    login(params){
+    login(params) {
         return request({
-            method:'post',
+            method: 'post',
             url: '/users/login',
             data: params,
-            mock:false
+            mock: false
         })
     },
-    noticeCount(params){
+    noticeCount(params) {
         return request({
-            method:'get',
+            method: 'get',
             url: '/leave/count',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    getMenuList(params){
+    getMenuList(params) {
         return request({
-            method:'get',
+            method: 'get',
             url: '/menu/list',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    getUserList(params){
+    getUserList(params) {
         return request({
-            method:'get',
+            method: 'get',
             url: '/users/list',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    deleteUser(params){
+    deleteUser(params) {
         return request({
-            method:'post',
+            method: 'post',
             url: '/users/delete',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    getRoleList(params){
+    getRoleList(params) {
         return request({
-            method:'get',
+            method: 'get',
             url: '/roles/allList',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    getDeptList(params){
+    getDeptList(params) {
         return request({
-            method:'get',
+            method: 'get',
             url: '/dept/list',
             data: params,
-            mock:true
+            mock: true
         })
     },
-    userSubmit(params){
+    userSubmit(params) {
         return request({
-            method:'post',
-            url:'/users/operate',
+            method: 'post',
+            url: '/users/operate',
             data: params,
-            mock:true
+            mock: true
         })
-    }
+    },
+    menuSubmit(params) {
+        return request({
+            method: 'post',
+            url: '/menu/operate',
+            data: params,
+            mock: true
+        })
+    },
 }

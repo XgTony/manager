@@ -41,7 +41,7 @@ const routes = [
             {
                 name: 'menu',
                 path: 'system/menu',
-                component: () => import('@/views/menu.vue'),
+                component: () => import('@/views/Menu.vue'),
                 meta: {
                     title: '菜单管理'
                 }
