@@ -10,7 +10,7 @@ export default {
             method: 'post',
             url: '/users/login',
             data: params,
-            mock: false
+            mock: true
         })
     },
     noticeCount(params) {
@@ -37,6 +37,14 @@ export default {
             mock: true
         })
     },
+    getAllUserList(params) {
+        return request({
+            method: 'get',
+            url: '/users/all/list',
+            data: params,
+            mock: true
+        })
+    },
     deleteUser(params) {
         return request({
             method: 'post',
@@ -45,10 +53,18 @@ export default {
             mock: true
         })
     },
-    getRoleList(params) {
+    getRoleAllList(params) {
         return request({
             method: 'get',
             url: '/roles/allList',
+            data: params,
+            mock: true
+        })
+    },
+    getRoleList(params) {
+        return request({
+            method: 'get',
+            url: '/roles/List',
             data: params,
             mock: true
         })
@@ -73,6 +89,30 @@ export default {
         return request({
             method: 'post',
             url: '/menu/operate',
+            data: params,
+            mock: true
+        })
+    },
+    roleSubmit(params) {
+        return request({
+            method: 'post',
+            url: '/roles/operate',
+            data: params,
+            mock: true
+        })
+    },
+    updatePermission(params) {
+        return request({
+            method: 'post',
+            url: '/roles/update/permission',
+            data: params,
+            mock: true
+        })
+    },
+    deptOperate(params) {
+        return request({
+            method: 'post',
+            url: '/dept/operate',
             data: params,
             mock: true
         })

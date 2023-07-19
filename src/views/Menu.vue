@@ -8,7 +8,7 @@ let showModal = ref(false)
 const dialogForm = ref(null)
 let action = ''
 const { proxy } = getCurrentInstance()
-const queryForm = reactive({
+let queryForm = reactive({
 	menuName: '',
 	menuState: 1,
 })
@@ -90,7 +90,7 @@ const getMenuList = async () => {
 		list.forEach((item) => {
 			menuList.push(item)
 		})
-		console.log(menuList)
+		// console.log(menuList)
 	} catch (error) {
 		throw new error()
 	}
@@ -99,8 +99,9 @@ const getMenuList = async () => {
 const handleQuery = () => {}
 // 重置
 const handleReset = (form) => {
-	showModal.value = false
-	form.resetFields()
+	queryForm = Object.assign(queryForm, { menuName: '', menuState: 1 })
+	// showModal.value = false
+	// form.resetFields()
 }
 // 新增
 const handleAdd = (type, row) => {
@@ -114,9 +115,18 @@ const handleAdd = (type, row) => {
 	}
 }
 // 编辑
-const handleEdit = () => {}
+const handleEdit = (row) => {
+	console.log(row)
+	showModal.value = true
+	action = 'edit'
+	console.log({ ...row })
+	Object.assign(menuForm, row)
+}
 // 删除
-const handleDelete = () => {}
+const handleDelete = () => {
+	proxy.$message.success('删除成功')
+	getMenuList()
+}
 // 取消
 const handleClose = () => {
 	showModal.value = false

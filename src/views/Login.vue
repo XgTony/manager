@@ -29,22 +29,19 @@ const rules = reactive({
 		},
 	],
 })
-onMounted(() => {
-
-})
+onMounted(() => {})
 const login = () => {
 	// console.log(user)
 	// 表单是否全部填写，valid=true,全部填写
 	userForm.value.validate((valid) => {
-		if(valid){
-			proxy.$api.login(user).then(res => {
-				// console.log(res);
+		if (valid) {
+			proxy.$api.login(user).then((res) => {
+				console.log(res)
 				// console.log(store);
-				store.commit('saveUserInfo',res)
+				store.commit('saveUserInfo', res)
 				router.push('/welcome')
-
 			})
-		}else {
+		} else {
 			return false
 		}
 	})
@@ -52,8 +49,8 @@ const login = () => {
 </script>
 
 <template>
-	<div class="login-wrapper" >
-		<div class="modal" >
+	<div class="login-wrapper">
+		<div class="modal">
 			<el-form ref="userForm" :model="user" status-icon :rules="rules">
 				<div class="title">123</div>
 				<el-form-item prop="userName">

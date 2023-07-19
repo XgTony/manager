@@ -22,10 +22,9 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.ts']
   },
-  // assetsPublicPath: './'
+
   build: {
     chunkSizeWarningLimit: 1500,
-
   },
 
 

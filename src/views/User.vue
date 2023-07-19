@@ -4,7 +4,7 @@ import {} from 'vue-router'
 onMounted(() => {
 	getTableData()
 	getDeptList()
-	getRoleList()
+	getRoleAllList()
 })
 const form = ref(null)
 const dialogForm = ref(null)
@@ -161,8 +161,8 @@ const getDeptList = async () => {
 	deptList.value = res
 }
 // 获取角色列表
-const getRoleList = async () => {
-	let res = await proxy.$api.getRoleList()
+const getRoleAllList = async () => {
+	let res = await proxy.$api.getRoleAllList()
 	roleList.value = res
 }
 // 用户取消
