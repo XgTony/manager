@@ -1,9 +1,10 @@
 <script setup>
 import { ref, reactive, getCurrentInstance, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import treeMenu from '@/components/TreeMenu.vue'
-import BreadCrumb from '@/components/BreadCrumb.vue';
+import BreadCrumb from '@/components/BreadCrumb.vue'
 const router = useRouter()
+const route = useRoute()
 const { proxy } = getCurrentInstance()
 let isCollapse = ref(false)
 let noticeCount = ref(0)
@@ -12,8 +13,16 @@ const userInfo = reactive(proxy.$store.state.userInfo)
 onMounted(() => {
 	getNoticeCount()
 	getMenuList()
+	getRouterPush()
 })
 
+const getRouterPush = () => {
+	// console.log(router)
+	// console.log(route.path)
+	let res = route.path.split('/')
+	// console.log(res[res.length - 1])
+	router.push(res[res.length - 1])
+}
 const handleLogout = (key) => {
 	if (key === 'email') return
 	if (key === 'logout') {
@@ -61,15 +70,15 @@ const toggle = () => {
 			<!-- @open="handleOpen" -->
 			<!-- @close="handleClose" -->
 			<el-menu
-                default-active="/system/menu"
+				default-active="/system/menu"
 				class="nav-menu"
 				router
 				background-color="#001529"
 				text-color="#FFF"
 				:collapse="isCollapse"
 			>
-                <treeMenu :userMenu="userMenu"></treeMenu>
-            </el-menu>
+				<treeMenu :userMenu="userMenu"></treeMenu>
+			</el-menu>
 		</div>
 
 		<div :class="['content-right', isCollapse ? 'fold' : 'unflod']">
@@ -79,8 +88,8 @@ const toggle = () => {
 						><Fold
 					/></el-icon>
 					<div class="bread">
-                        <BreadCrumb></BreadCrumb>
-                    </div>
+						<BreadCrumb></BreadCrumb>
+					</div>
 				</div>
 				<div class="user-info">
 					<el-badge

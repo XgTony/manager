@@ -117,4 +117,12 @@ export default {
             mock: true
         })
     },
+    getApplyList(params) {
+        return request({
+            url: '/leave/list',
+            method: 'get',
+            data: params,
+            mock: true
+        })
+    },
 }

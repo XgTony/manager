@@ -61,6 +61,14 @@ const routes = [
                 meta: {
                     title: '部门管理'
                 }
+            },
+            {
+                name: 'leave',
+                path: 'audit/leave',
+                component: () => import('@/views/Leave.vue'),
+                meta: {
+                    title: '审批管理'
+                }
             }
 
         ]
