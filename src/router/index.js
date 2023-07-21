@@ -14,6 +14,15 @@ const routes = [
         component: () => import('@/views/Login.vue')
     },
     {
+        name: '404',
+        path: '/404',
+        meta: {
+            title: '404'
+        },
+        component: () => import('@/views/404.vue')
+    },
+
+    {
         name: 'home',
         path: '/',
         component: Home,
@@ -81,6 +90,11 @@ const routes = [
 
         ]
     },
+    // 404
+    {
+        path: '/:pathMatch(.*)',
+        redirect: '/404'
+    },
 ]
 
 
@@ -99,11 +113,6 @@ router.beforeEach((to, from, next) => {
             next()
         }
     }
-    //
-
-    // ...
-    // 返回 false 以取消导航
-    // return { name: 'login', component: () => import('@/views/Login.vue') }
 })
 
 export default router
