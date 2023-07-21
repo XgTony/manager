@@ -33,4 +33,7 @@ yarn
 
 # 本地开发 启动项目
 yarn dev
+
+# 在线浏览项目
+https://xgtony.github.io/manager/
 ```
