@@ -3,7 +3,7 @@
 
 ### 目录结构
 ```
-├── build                      # 构建相关
+├── dist                     # 构建相关
 ├── public                     # 静态资源
 │   │── vite.svg               # favicon图标
 ├── src                        # 源代码
