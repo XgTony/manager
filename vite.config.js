@@ -17,6 +17,11 @@ export default defineConfig({
       }
     }
   },
+  build: {
+    chunkSizeWarningLimit: 1500,
+    assetsPublicPath: './',
+  },
+  base: "./",
   plugins: [vue()],
   resolve: {
     alias: {
@@ -24,16 +29,7 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.ts']
   },
-  // css: {
-  //   preprocessorOptions: {
-  //     scss: {
-  //       additionalData: `@import '@/assets/style/base.scss';`
-  //     }
-  //   }
-  // },
-  build: {
-    chunkSizeWarningLimit: 1500,
-  },
+
 
 
 })

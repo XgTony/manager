@@ -88,5 +88,10 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
+router.beforeEach((to, from) => {
+    // ...
+    // 返回 false 以取消导航
+    // return { name: 'login', component: () => import('@/views/Login.vue') }
+})
 
 export default router

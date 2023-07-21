@@ -9,21 +9,25 @@
 const env = import.meta.env.MODE || 'production'
 const EnvConfig = {
     development: {
-        baseApi: '/api',
+        baseApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api',
         mockApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api'
     },
     test: {
-        baseApi: '/',
-        mockApi: 'https://www.fastmock.site/mock/ed148014aae7cfb08161c366561fada6/api'
+        baseApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api',
+        mockApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api'
     },
     production: {
-        baseApi: '/',
-        mockApi: 'https://www.fastmock.site/mock/ed148014aae7cfb08161c366561fada6/api'
+        baseApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api',
+        mockApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api'
     }
 }
 export default {
     env,
-    mock: false,
+    mock: true,
     namespace: 'manager',
     ...EnvConfig[env]
+
+    // baseApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api',
+    // mockApi: 'https://www.fastmock.site/mock/c1c302e8baed9894c48c17e4738c092e/api'
+
 }

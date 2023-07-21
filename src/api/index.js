@@ -10,7 +10,6 @@ export default {
             method: 'post',
             url: '/users/login',
             data: params,
-            mock: true
         })
     },
     noticeCount(params) {
@@ -18,7 +17,6 @@ export default {
             method: 'get',
             url: '/leave/count',
             data: params,
-            mock: true
         })
     },
     getMenuList(params) {
@@ -26,7 +24,6 @@ export default {
             method: 'get',
             url: '/menu/list',
             data: params,
-            mock: true
         })
     },
     getUserList(params) {
@@ -106,7 +103,6 @@ export default {
             method: 'post',
             url: '/roles/update/permission',
             data: params,
-            mock: true
         })
     },
     deptOperate(params) {
@@ -130,7 +126,6 @@ export default {
             url: '/leave/approve',
             method: 'post',
             data: params,
-            mock: true
         })
     },
     leaveOperate(params) {
@@ -138,7 +133,6 @@ export default {
             url: '/leave/operate',
             method: 'post',
             data: params,
-            mock: true
         })
     },
     getApplyList(params) {
@@ -146,7 +140,7 @@ export default {
             url: '/leave/list',
             method: 'get',
             data: params,
-            mock: true
+
         })
     },
 }
