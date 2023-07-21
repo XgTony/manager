@@ -1,7 +1,7 @@
 // createRouter 创建路由
 // createWebHashHistory 哈希路由
 import { createRouter, createWebHashHistory } from 'vue-router'
-
+import store from '../store'
 import Home from './../components/Home.vue'
 
 const routes = [
@@ -88,7 +88,19 @@ const router = createRouter({
     history: createWebHashHistory(),
     routes
 })
-router.beforeEach((to, from) => {
+router.beforeEach((to, from, next) => {
+    console.log(to.path);
+    if (to.path === '/login') {
+        next()
+    } else {
+        if (!store.state.userInfo) {
+            next('/login')
+        } else {
+            next()
+        }
+    }
+    //
+
     // ...
     // 返回 false 以取消导航
     // return { name: 'login', component: () => import('@/views/Login.vue') }
