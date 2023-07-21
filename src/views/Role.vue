@@ -1,5 +1,14 @@
 <script setup>
-import { ref, reactive, getCurrentInstance, onMounted } from 'vue'
+import {
+	ref,
+	reactive,
+	getCurrentInstance,
+	onMounted,
+	computed,
+	watchEffect,
+	watch,
+} from 'vue'
+import _ from 'lodash'
 // 获取Vue实例
 const { proxy } = getCurrentInstance()
 // 获取数据
@@ -11,6 +20,7 @@ onMounted(() => {
 const queryForm = reactive({
 	roleName: '',
 })
+let tempArr = ref([])
 // 分页器默认参数
 const pager = ref({
 	pageSize: 10,
@@ -97,6 +107,11 @@ const getMenuList = async () => {
 	let res = await proxy.$api.getMenuList()
 	console.log(res)
 	menuList.value = res
+	tempArr.value = _.cloneDeep(res)
+	// res.forEach((item) => {
+	// 	tempArr.push(item)
+	// })
+
 	// proxy.$nextTick(() => {
 	//
 	// })
@@ -105,6 +120,14 @@ const getMenuList = async () => {
 	// 	getActionMap([...res])
 	// }, 1000)
 }
+// const computedMenuList = computed((menuList) => {
+// 	console.log('计算属性', menuList)
+// 	return menuList.value
+// })
+watch(tempArr, () => {
+	// console.log('侦听器', tempArr)
+	getActionMap(tempArr.value)
+})
 // 查询
 const handleQuery = () => {}
 // 重置
@@ -164,6 +187,7 @@ const handleSubmit = () => {
 				remark: '',
 			}
 			getRoleList()
+			getMenuList()
 		} else {
 			proxy.$message.error('信息填写不完整')
 		}
@@ -179,10 +203,11 @@ const permissionSubmit = async () => {
 	let res = await proxy.$api.updatePermission(keys)
 	proxy.$message.success('修改成功')
 	promessionFlag.value = false
+	getMenuList()
 }
 // 获取权限选项
 const getActionMap = (list) => {
-	console.log(list)
+	// console.log(list)
 
 	let actionMap = {}
 	const deep = (arr) => {
@@ -199,7 +224,7 @@ const getActionMap = (list) => {
 	deep(list)
 
 	actionMaps.value = actionMap
-	console.log(actionMaps.value)
+	// console.log(actionMaps.value)
 }
 </script>
 <template>

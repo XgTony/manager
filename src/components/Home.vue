@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, getCurrentInstance, onMounted } from 'vue'
+import { ref, reactive, getCurrentInstance, onMounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import treeMenu from '@/components/TreeMenu.vue'
 import BreadCrumb from '@/components/BreadCrumb.vue'
@@ -13,9 +13,11 @@ const userInfo = reactive(proxy.$store.state.userInfo)
 onMounted(() => {
 	getNoticeCount()
 	getMenuList()
-	getRouterPush()
+	// getRouterPush()
 })
-
+let componentURL = computed(() => {
+	return route.path
+})
 const getRouterPush = () => {
 	// console.log(router)
 	// console.log(route.path)
@@ -69,8 +71,9 @@ const toggle = () => {
 			<!-- 导航菜单 -->
 			<!-- @open="handleOpen" -->
 			<!-- @close="handleClose" -->
+			<!-- 1111111 -->
 			<el-menu
-				default-active="/system/menu"
+				:default-active="componentURL"
 				class="nav-menu"
 				router
 				background-color="#001529"

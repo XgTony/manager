@@ -41,7 +41,7 @@ const rules = {
 		},
 	],
 }
-const detail = reactive({})
+const detail = ref({})
 const action = ref('create')
 // columns表头行
 const columns = ref([
@@ -117,9 +117,10 @@ const columns = ref([
 	},
 ])
 let showModal = ref(false)
+let showDetailModal = ref(false)
 // 弹框ref
 const dialogForm = ref(null)
-
+const table = ref(null)
 onMounted(() => {
 	getApplyList()
 })
@@ -128,23 +129,89 @@ const getApplyList = async () => {
 	let res = await proxy.$api.getApplyList()
 	console.log(res)
 	applyList.value = res.list
+	pager.value = res.page
 }
 // 重置
-const handleReset = () => {}
+const handleReset = () => {
+	getApplyList()
+}
 // 申请休假
-const handleApply = () => {}
+const handleApply = () => {
+	showModal.value = true
+	action.value = 'create'
+}
 // 查看
-const handleDetail = () => {}
+const handleDetail = (row) => {
+	let data = { ...row }
+	data.applyTypeName = {
+		1: '事假',
+		2: '调休',
+		3: '年假',
+	}[data.applyType]
+	data.time =
+		utils.formateDate(new Date(data.startTime), 'yyyy-MM-dd') +
+		'到' +
+		utils.formateDate(new Date(data.endTime), 'yyyy-MM-dd')
+	// 1:待审批 2:审批中 3:审批拒绝 4:审批通过 5:作废
+	data.applyStateName = {
+		1: '待审批',
+		2: '审批中',
+		3: '审批拒绝',
+		4: '审批通过',
+		5: '作废',
+	}[data.applyState]
+	detail.value = data
+
+	showDetailModal.value = true
+	console.log(row)
+}
 // 作废
-const handleDelete = () => {}
+const handleDelete = async (_id) => {
+	try {
+		let params = { _id, action: 'delete' }
+		let res = await proxy.$api.leaveOperate(params)
+		proxy.$message.success('删除成功')
+		getApplyList()
+	} catch (error) {}
+}
 // 分页事件
-const handleCurrentChange = () => {}
+const handleCurrentChange = (current) => {
+	pager.value.pageNum = current
+}
 //
-const handleDateChange = () => {}
+const handleDateChange = (key, val) => {
+	let { startTime, endTime } = leaveForm
+	if (!startTime || !endTime) return
+	if (startTime > endTime) {
+		proxy.$message.error('开始日期不能晚于结束日期')
+		leaveForm.leaveTime = '0天'
+		setTimeout(() => {
+			leaveForm[key] = ''
+		}, 0)
+	} else {
+		leaveForm.leaveTime =
+			(endTime - startTime) / (24 * 60 * 60 * 1000) + 1 + '天'
+	}
+}
 // 取消
-const handleClose = () => {}
+const handleClose = () => {
+	showModal.value = false
+	dialogForm.value.resetFields()
+}
 // 提交
-const handleSubmit = () => {}
+const handleSubmit = () => {
+	dialogForm.value.validate(async (valid) => {
+		if (valid) {
+			try {
+				let params = { ...leaveForm, action: action.value }
+				let res = await proxy.$api.leaveOperate(params)
+				proxy.$message.success('创建成功')
+				handleClose()
+				getApplyList()
+			} catch (error) {}
+		}
+	})
+}
 </script>
 
 <template>
@@ -175,7 +242,7 @@ const handleSubmit = () => {}
 					>申请休假</el-button
 				>
 			</div>
-			<el-table :data="applyList">
+			<el-table :data="applyList" ref="table">
 				<el-table-column
 					v-for="item in columns"
 					:key="item.prop"
@@ -203,7 +270,7 @@ const handleSubmit = () => {}
 			<el-pagination
 				class="pagination"
 				background
-				layout="prev, pager, next"
+				:layout="(prev, pager, next)"
 				:total="pager.total"
 				:page-size="pager.pageSize"
 				@current-change="handleCurrentChange"

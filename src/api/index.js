@@ -125,4 +125,28 @@ export default {
             mock: true
         })
     },
+    leaveApprove(params) {
+        return request({
+            url: '/leave/approve',
+            method: 'post',
+            data: params,
+            mock: true
+        })
+    },
+    leaveOperate(params) {
+        return request({
+            url: '/leave/operate',
+            method: 'post',
+            data: params,
+            mock: true
+        })
+    },
+    getApplyList(params) {
+        return request({
+            url: '/leave/list',
+            method: 'get',
+            data: params,
+            mock: true
+        })
+    },
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps,computed } from 'vue'
+import { defineProps, computed } from 'vue'
 const props = defineProps({
 	userMenu: {
 		type: Array,
@@ -8,7 +8,6 @@ const props = defineProps({
 		},
 	},
 })
-
 </script>
 
 <template>
@@ -17,7 +16,7 @@ const props = defineProps({
 			v-if="
 				menu.children &&
 				menu.children.length > 0 &&
-                menu.children[0].menuType ==1
+				menu.children[0].menuType == 1
 			"
 			:key="menu._id"
 			:index="menu.path"
@@ -30,9 +29,12 @@ const props = defineProps({
 			    <el-menu-item index="1-2">菜单管理</el-menu-item> -->
 			<treeMenu :userMenu="menu.children"></treeMenu>
 		</el-sub-menu>
-		<el-menu-item  v-else-if="menu.menuType == 1" :index="menu.path" :key="index">{{
-			menu.menuName
-		}}</el-menu-item>
+		<el-menu-item
+			v-else-if="menu.menuType == 1"
+			:index="menu.path"
+			:key="index"
+			>{{ menu.menuName }}</el-menu-item
+		>
 	</template>
 
 	<!-- <el-menu
